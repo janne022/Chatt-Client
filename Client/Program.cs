@@ -5,6 +5,7 @@ using System.Threading;
 using System.Xml.Serialization;
 using System.IO;
 using Microsoft.WindowsAPICodePack.Dialogs;
+using System.Diagnostics;
 
 namespace Client
 {
@@ -19,6 +20,7 @@ namespace Client
                 serverList = LoadInstances(serverList, serializer);
             }
             Raylib.InitWindow(1200,800,"Janne's Chatt");
+            serverList.Add(new Server());
             serverList[0].Join();
             serverList.Add(new Server());
             InteractUi ui = new InteractUi();

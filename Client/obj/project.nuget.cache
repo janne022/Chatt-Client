@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "yvimNy0i/tRoOZ/mU2vlNlt3mMhWSECNAmOnbajjXWc99fsw68GKcJeBjyOMiVgJcDbwjFNpmWq6yjAQbsSk5g==",
+  "dgSpecHash": "8PwMokFhelFWFw7HGqHFv5FnVnnu+peCIJToKoCxnFZL03gpXZX0/fvdJYah1Yxez2whujyIJ7kCvc/9IpHtzg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj",
+  "projectFilePath": "c:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\janni\\.nuget\\packages\\microsoft-windowsapicodepack-core\\1.1.4\\microsoft-windowsapicodepack-core.1.1.4.nupkg.sha512",
     "C:\\Users\\janni\\.nuget\\packages\\microsoft-windowsapicodepack-shell\\1.1.4\\microsoft-windowsapicodepack-shell.1.1.4.nupkg.sha512",
+    "C:\\Users\\janni\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\janni\\.nuget\\packages\\raylib-cs\\3.1.5\\raylib-cs.3.1.5.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512"
   ],

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
@@ -46,11 +48,18 @@ namespace Client
         }
         public void SetPassword(string newPassword)
         {
-            password = Encrypt(newPassword, decryptedKey, decryptedIV);
+            using (AesManaged myAes = new AesManaged())
+            {
+             password = Encrypt(newPassword, myAes.Key, myAes.IV);
+            }
         }
         public string GetPassword()
         {
-            return Decrypt(password, decryptedKey, decryptedIV);
+            using (AesManaged myAes = new AesManaged())
+            {
+                return Decrypt(password, myAes.Key, myAes.IV);
+            }
+
         }
         private byte[] Encrypt(string decryptedString, byte[] key, byte[] IV)
         {
@@ -100,7 +109,7 @@ namespace Client
                 //reads and write to memory, used as buffer
                 using (MemoryStream msDecrypt = new MemoryStream(cipherText))
                 {
-                    //uses previous stream together with the aes encryptor to create a cryptopstream, where we can decrypt a byte array 
+                    //uses previous stream together with the aes encryptor to create a cryptopstream, where we can decrypt a byte array
                     using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
                     {
                         using (StreamReader srDecrypt = new StreamReader(csDecrypt))
@@ -218,6 +227,21 @@ namespace Client
                 Byte[] messageByte = Encoding.UTF8.GetBytes(message);
                 NetworkStream stream = client.GetStream();
                 stream.Write(messageByte, 0, messageByte.Length);
+            }
+            catch (Exception)
+            {
+                 System.Console.WriteLine("It looks the the connection with the server broke");
+            }
+        }
+        public void SendMessageImage(string path)
+        {
+            try
+            {
+                MemoryStream memoryStream = new MemoryStream();
+                System.Drawing.Image image = new Bitmap(path);
+                NetworkStream stream = client.GetStream();
+                image.Save(memoryStream, image.RawFormat);
+                stream.Write(memoryStream.ToArray(), 0, memoryStream.ToArray().Length);
             }
             catch (Exception)
             {

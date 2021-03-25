@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj": {}
+    "c:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj": {}
   },
   "projects": {
-    "C:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj": {
+    "c:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj",
+        "projectUniqueName": "c:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj",
         "projectName": "Client",
-        "projectPath": "C:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj",
+        "projectPath": "c:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj",
         "packagesPath": "C:\\Users\\janni\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\obj\\",
+        "outputPath": "c:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[1.1.4, )"
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
             "Raylib-cs": {
               "target": "Package",
               "version": "[3.1.5, )"
@@ -68,7 +72,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.405\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.407\\RuntimeIdentifierGraph.json"
         }
       }
     }

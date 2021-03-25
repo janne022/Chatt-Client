@@ -74,7 +74,20 @@ namespace Client
                 }
             }
             Texture2D imageTexture = Raylib.LoadTextureFromImage(img);
-            Raylib.DrawTexture(imageTexture, 200, 200, Color.WHITE);
+            double ratio = 0;
+            if (imageTexture.width > imageTexture.height)
+            {
+                ratio = imageTexture.width/500;
+                imageTexture.width = 500;
+                imageTexture.height = (int)(imageTexture.height/ratio);
+            }
+            else
+            {
+                ratio = imageTexture.height/500;
+                imageTexture.height = 500;
+                imageTexture.width = (int)(imageTexture.width/ratio);
+            }
+            Raylib.DrawTexture(imageTexture, 200, 150, Color.WHITE);
             Raylib.DrawRectangle((int)inputBox.x,(int)inputBox.y,(int)inputBox.height,(int)inputBox.width,Color.BLUE);
             Texture2D iconTexture = Raylib.LoadTextureFromImage(imgIcon);
             iconTexture.height = 80;
