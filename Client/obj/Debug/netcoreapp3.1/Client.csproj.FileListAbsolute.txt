@@ -20,3 +20,4 @@ C:\Users\janni\OneDrive\Dokument\Visual Studio Code\Chatt Client\Client\obj\Debu
 C:\Users\janni\OneDrive\Dokument\Visual Studio Code\Chatt Client\Client\obj\Debug\netcoreapp3.1\Client.genruntimeconfig.cache
 C:\Users\janni\OneDrive\Dokument\Visual Studio Code\Chatt Client\Client\bin\Debug\netcoreapp3.1\Microsoft.WindowsAPICodePack.Shell.dll
 C:\Users\janni\OneDrive\Dokument\Visual Studio Code\Chatt Client\Client\bin\Debug\netcoreapp3.1\Microsoft.WindowsAPICodePack.dll
+C:\Users\janni\OneDrive\Dokument\Visual Studio Code\Chatt Client\Client\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll

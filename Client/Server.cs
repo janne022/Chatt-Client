@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Newtonsoft.Json;
 using Raylib_cs;
 
 namespace Client
@@ -22,8 +23,8 @@ namespace Client
         public byte[] password;
 
         //These may need to change to update password, I read that these shouldn't be the same? But it keeps complaining without them being the same.
-        byte[] decryptedKey = Encoding.UTF8.GetBytes("r4u7x!A%D*G-KaPd");
-        byte[] decryptedIV = Encoding.UTF8.GetBytes("r4u7x!A%D*G-KaPd");
+        private readonly byte[] decryptedKey = Encoding.UTF8.GetBytes("r4u7x!A%D*G-KaPd");
+        private readonly byte[] decryptedIV = Encoding.UTF8.GetBytes("r4u7x!A%D*G-KaPd");
         string serverImage;
         string nameColor;
 
@@ -33,7 +34,7 @@ namespace Client
         private bool liveChat = true;
 
         [DllImport(Raylib.nativeLibName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void DrawText([MarshalAs(UnmanagedType.LPUTF8Str)] string text, int posX, int posY, int fontSize, Color color);
+        public static extern void DrawText([MarshalAs(UnmanagedType.LPUTF8Str)] string text, int posX, int posY, int fontSize, Raylib_cs.Color color);
         public void SetPortIp(string ip, int port)
         {
             //This method takes both ip and port, since the two don't have any special rules and because they are interconnected they can be set together
@@ -48,9 +49,11 @@ namespace Client
         }
         public void SetPassword(string newPassword)
         {
+
             using (AesManaged myAes = new AesManaged())
             {
-             password = Encrypt(newPassword, myAes.Key, myAes.IV);
+                password = Encrypt(newPassword, myAes.Key, myAes.IV);
+                System.Console.WriteLine(myAes.Key + " encrypt");
             }
         }
         public string GetPassword()
@@ -61,7 +64,7 @@ namespace Client
             }
 
         }
-        private byte[] Encrypt(string decryptedString, byte[] key, byte[] IV)
+        public byte[] Encrypt(string decryptedString, byte[] key, byte[] IV)
         {
             byte[] decryptedStringBytes = Encoding.UTF8.GetBytes(decryptedString);
             byte[] encrypted;
@@ -69,8 +72,8 @@ namespace Client
             //aes handles keys, ivs, encryptors etc.
             using (Aes aes = new AesManaged())
             {
-                aes.IV = key;
-                aes.Key = IV;
+                aes.IV = IV;
+                aes.Key = key;
                 ICryptoTransform encryptor = aes.CreateEncryptor();
 
                 //reads and write to memory, used as buffer
@@ -114,7 +117,6 @@ namespace Client
                     {
                         using (StreamReader srDecrypt = new StreamReader(csDecrypt))
                         {
-
                             plaintext = srDecrypt.ReadToEnd();
                         }
                     }
@@ -214,39 +216,33 @@ namespace Client
             int y = 450;
             for (int i = messages.Count - 1; i >= 0; i--)
             {
-                DrawText(messages[i],x,y,16,Color.WHITE);
+                DrawText(messages[i],x,y,16, Raylib_cs.Color.WHITE);
                 y -= 15;
             }
         }
 
         //Method takes a string and sends it to server
-        public void SendMessage(string message)
+        public void SendMessage(string message = "", string imagePath = "")
         {
-            try
+            Message newMessage = new Message();
+            NetworkStream stream = client.GetStream();
+            //ADD IMAGE
+            if (imagePath != "")
             {
-                Byte[] messageByte = Encoding.UTF8.GetBytes(message);
-                NetworkStream stream = client.GetStream();
-                stream.Write(messageByte, 0, messageByte.Length);
+                System.Drawing.Image image = System.Drawing.Image.FromFile(imagePath);
+                using (MemoryStream imageStream = new MemoryStream())
+                {
+                    image.Save(imageStream, image.RawFormat);
+                    byte[] imageArray = imageStream.ToArray();
+                    newMessage.image = Convert.ToBase64String(imageArray);
+                }
             }
-            catch (Exception)
-            {
-                 System.Console.WriteLine("It looks the the connection with the server broke");
-            }
-        }
-        public void SendMessageImage(string path)
-        {
-            try
-            {
-                MemoryStream memoryStream = new MemoryStream();
-                System.Drawing.Image image = new Bitmap(path);
-                NetworkStream stream = client.GetStream();
-                image.Save(memoryStream, image.RawFormat);
-                stream.Write(memoryStream.ToArray(), 0, memoryStream.ToArray().Length);
-            }
-            catch (Exception)
-            {
-                 System.Console.WriteLine("It looks the the connection with the server broke");
-            }
+            //add message
+            newMessage.messageText = message;
+            //SEND
+            string json = JsonConvert.SerializeObject(newMessage);
+            System.Console.WriteLine(json);
+            stream.Write(Encoding.UTF8.GetBytes(json), 0, Encoding.UTF8.GetBytes(json).Length);
         }
     }
 
