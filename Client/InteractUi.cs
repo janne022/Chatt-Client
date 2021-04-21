@@ -25,7 +25,6 @@ namespace Client
 
         [DllImport(Raylib.nativeLibName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DrawText([MarshalAs(UnmanagedType.LPUTF8Str)] string text, int posX, int posY, int fontSize, Color color);
-
         [DllImport(Raylib.nativeLibName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DrawTextRec(Font font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint);
         public void ChatBox(Server server)
@@ -70,6 +69,7 @@ namespace Client
                     if (fileExplorer.ShowDialog() == CommonFileDialogResult.Ok)
                     {
                         img = Raylib.LoadImage(fileExplorer.FileName);
+                        
                     }
                 }
             }
