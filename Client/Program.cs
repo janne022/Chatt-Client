@@ -21,8 +21,6 @@ namespace Client
             }
             Raylib.InitWindow(1200,800,"Janne's Chatt");
             serverList.Add(new Server());
-            serverList[0].SetPassword("password");
-            System.Console.WriteLine(serverList[0].GetPassword());
             serverList[0].Join();
             InteractUi ui = new InteractUi();
             Thread timeTick = new Thread(()=>BackgroundTick(serverList, serializer));

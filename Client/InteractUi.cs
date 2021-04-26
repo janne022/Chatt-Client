@@ -69,7 +69,6 @@ namespace Client
                     if (fileExplorer.ShowDialog() == CommonFileDialogResult.Ok)
                     {
                         img = Raylib.LoadImage(fileExplorer.FileName);
-                        
                     }
                 }
             }

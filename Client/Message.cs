@@ -7,10 +7,9 @@ namespace Client
     public class Message
     {
         //uuid should be assigned by server and set for every message
-        string uuid;
+        public string uuid;
         public string messageText = "";
-        
         public string image = "";
-        string color;
+        public string color;
     }
 }
