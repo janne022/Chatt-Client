@@ -28,7 +28,13 @@ namespace Client
 
         [DllImport(Raylib.nativeLibName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DrawTextRec(Font font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint);
-        public void ChatBox(Server server)
+        public Server activeServer;
+
+        public void SetActiveServer(Server activeServer)
+        {
+            this.activeServer = activeServer;
+        }
+        public void ChatBox()
         {
             dt += Raylib.GetFrameTime();
             if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(),inputBox))
@@ -52,7 +58,7 @@ namespace Client
                 }
                 if (Raylib.IsKeyReleased(KeyboardKey.KEY_ENTER))
                 {
-                    server.SendMessage(new string(name));
+                    activeServer.SendMessage("MESSAGE",message: new string(name));
                     for (int i = 0; i < name.Length; i++)
                     {
                         name[i] = '\0';
@@ -60,6 +66,7 @@ namespace Client
                     }
                 }
             }
+            //Upload Picture function
             if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(),openImage))
             {
                 if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
@@ -70,7 +77,9 @@ namespace Client
                     if (fileExplorer.ShowDialog() == CommonFileDialogResult.Ok)
                     {
                         img = Raylib.LoadImage(fileExplorer.FileName);
+                        activeServer.SendMessage("MESSAGE",imagePath: fileExplorer.FileName);
                     }
+                    
                 }
             }
             Texture2D imageTexture = Raylib.LoadTextureFromImage(img);
