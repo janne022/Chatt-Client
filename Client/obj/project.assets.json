@@ -249,11 +249,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj",
+      "projectUniqueName": "C:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj",
       "projectName": "Client",
-      "projectPath": "c:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj",
+      "projectPath": "C:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj",
       "packagesPath": "C:\\Users\\janni\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\obj\\",
+      "outputPath": "C:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -314,7 +314,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.407\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.408\\RuntimeIdentifierGraph.json"
       }
     }
   }
