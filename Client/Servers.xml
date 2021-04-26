@@ -1,8 +1,45 @@
 <?xml version="1.0"?>
 <ArrayOfServer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Server>
-    <port>0</port>
+    <ip>localhost</ip>
+    <port>9999</port>
     <password>+VR5P69Dqfb89/XuhMhKMg==</password>
+  </Server>
+  <Server>
+    <port>0</port>
+  </Server>
+  <Server>
+    <port>0</port>
+  </Server>
+  <Server>
+    <port>0</port>
+  </Server>
+  <Server>
+    <port>0</port>
+  </Server>
+  <Server>
+    <port>0</port>
+  </Server>
+  <Server>
+    <port>0</port>
+  </Server>
+  <Server>
+    <port>0</port>
+  </Server>
+  <Server>
+    <port>0</port>
+  </Server>
+  <Server>
+    <port>0</port>
+  </Server>
+  <Server>
+    <port>0</port>
+  </Server>
+  <Server>
+    <port>0</port>
+  </Server>
+  <Server>
+    <port>0</port>
   </Server>
   <Server>
     <port>0</port>

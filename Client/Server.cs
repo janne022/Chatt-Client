@@ -214,6 +214,7 @@ namespace Client
             }
         }
 
+        //prints messages sent by server
         public void PrintMessages()
         {
             int x = 100;
@@ -251,13 +252,12 @@ namespace Client
             }
         }
 
-        //Method takes a string and sends it to server
-        //FIX
-        public void SendMessage(string message = "", string imagePath = "")
+        //Method takes a string to send as message, also takes imagepath and sends as base64
+        public void SendMessage(string header, string message = "", string imagePath = "")
         {
             Message newMessage = new Message();
             NetworkStream stream = client.GetStream();
-            //ADD IMAGE
+            //Add Image
             if (imagePath != "")
             {
                 System.Drawing.Image image = System.Drawing.Image.FromFile(imagePath);
@@ -268,9 +268,11 @@ namespace Client
                     newMessage.image = Convert.ToBase64String(imageArray);
                 }
             }
-            //add message
+            //Add Message
             newMessage.messageText = message;
-            //SEND
+            //Add Header
+            newMessage.header = header;
+            //Send
             string json = JsonConvert.SerializeObject(newMessage);
             System.Console.WriteLine(json);
             stream.Write(Encoding.UTF8.GetBytes(json), 0, Encoding.UTF8.GetBytes(json).Length);
