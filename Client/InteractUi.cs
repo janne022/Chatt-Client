@@ -76,13 +76,8 @@ namespace Client
                     if (fileExplorer.ShowDialog() == CommonFileDialogResult.Ok)
                     {
                         img = Raylib.LoadImage(fileExplorer.FileName);
-<<<<<<< HEAD
                         activeServer.SendMessage("MESSAGE",imagePath: fileExplorer.FileName);
-=======
-                        
->>>>>>> 981945fb92e04e67c9859170ce1d41416ca33af2
                     }
-                    
                 }
             }
             Texture2D imageTexture = Raylib.LoadTextureFromImage(img);
