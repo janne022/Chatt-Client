@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -11,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using Newtonsoft.Json;
 using Raylib_cs;
+using System.Runtime.Serialization.Json;
 
 namespace Client
 {
@@ -29,7 +31,7 @@ namespace Client
         string nameColor;
 
         TcpClient client;
-        List<string> messages = new List<string>();
+        List<Message> messages = new List<Message>();
 
         private bool liveChat = true;
 
@@ -200,7 +202,9 @@ namespace Client
                     int bytes = stream.Read(data2, 0, data2.Length);
                     responeseData = System.Text.Encoding.UTF8.GetString(data2, 0, bytes);
                     System.Console.WriteLine(responeseData);
-                    messages.Add(responeseData);
+                    Message newMessage = JsonConvert.DeserializeObject<Message>(responeseData);
+                    
+                    messages.Add(newMessage);
                 }
             }
             //if the server closes down for some reason, it will deliver this message to you and return you to the start.
@@ -217,8 +221,34 @@ namespace Client
             int y = 450;
             for (int i = messages.Count - 1; i >= 0; i--)
             {
-                DrawText(messages[i],x,y,16, Raylib_cs.Color.WHITE);
-                y -= 15;
+                if (messages[i].messageText != string.Empty)
+                {
+                    DrawText(messages[i].messageText,x,y,16, Raylib_cs.Color.WHITE);   
+                    y -= 15;
+                }
+                if (messages[i].image != string.Empty)
+                {
+                    byte[] imageData = Convert.FromBase64String(messages[i].image);
+                    string imageDataRaw = Encoding.UTF8.GetString(imageData);
+                    IntPtr memoryImage = Marshal.StringToCoTaskMemUTF8(imageDataRaw);
+                    Raylib_cs.Image img = Raylib.LoadImagePro(memoryImage, 100,100,0);
+                    Texture2D imageTexture = Raylib.LoadTextureFromImage(img);
+                    double ratio = 0;
+                    if (imageTexture.width > imageTexture.height)
+                    {
+                        ratio = imageTexture.width/500;
+                        imageTexture.width = 500;
+                        imageTexture.height = (int)(imageTexture.height/ratio);
+                    }
+                    else
+                    {
+                        ratio = imageTexture.height/500;
+                        imageTexture.height = 500;
+                        imageTexture.width = (int)(imageTexture.width/ratio);
+                    }
+                    Raylib.DrawTexture(imageTexture, 200, 150, Raylib_cs.Color.WHITE);
+                    
+                }
             }
         }
 
