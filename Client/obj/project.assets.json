@@ -242,38 +242,29 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\janni\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\elev\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj",
+      "projectUniqueName": "C:\\Users\\elev\\Documents\\GitHub\\Chatt-Client\\Client\\Client.csproj",
       "projectName": "Client",
-      "projectPath": "C:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj",
-      "packagesPath": "C:\\Users\\janni\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\obj\\",
+      "projectPath": "C:\\Users\\elev\\Documents\\GitHub\\Chatt-Client\\Client\\Client.csproj",
+      "packagesPath": "C:\\Users\\elev\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\elev\\Documents\\GitHub\\Chatt-Client\\Client\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\janni\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\elev\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {},
-        "https://nuget.emzi0767.com/api/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "projectReferences": {}
         }
       },
@@ -285,6 +276,7 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "Microsoft-WindowsAPICodePack-Shell": {
             "target": "Package",
@@ -314,7 +306,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.408\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }

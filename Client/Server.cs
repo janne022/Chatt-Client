@@ -34,6 +34,7 @@ namespace Client
         List<Message> messages = new List<Message>();
 
         private bool liveChat = true;
+        NetworkStream stream;
 
         [DllImport(Raylib.nativeLibName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DrawText([MarshalAs(UnmanagedType.LPUTF8Str)] string text, int posX, int posY, int fontSize, Raylib_cs.Color color);
@@ -133,7 +134,7 @@ namespace Client
             try
             {
                 client = new TcpClient(ip, port);
-                NetworkStream stream = client.GetStream();
+                stream = client.GetStream();
                 SendMessage("LOGIN", "Janne,programmering");
                 try
                 {
@@ -150,7 +151,6 @@ namespace Client
                         Message newMessage = JsonConvert.DeserializeObject<Message>(responeseData);
                         if (newMessage.messageText == "yes")
                         {
-                            stream.Close();
                             Thread liveChat = new Thread(() => LiveChat());
                             liveChat.Start();
                             return;
@@ -193,8 +193,9 @@ namespace Client
                 */
                 NetworkStream stream = client.GetStream();
                 while (liveChat)
+                //FIX: SERVER SEND MESSAGE WITH LENGTH FIRST AND BYTE SIZE CHANGES ACCORDINGLY
                 {
-                    byte[] data2 = new byte[256];
+                    byte[] data2 = new byte[1028];
                     string responeseData = string.Empty;
                     int bytes = stream.Read(data2, 0, data2.Length);
                     responeseData = System.Text.Encoding.UTF8.GetString(data2, 0, bytes);
@@ -256,7 +257,7 @@ namespace Client
         public void SendMessage(string header, string message = "", string imagePath = "")
         {
             Message newMessage = new Message();
-            NetworkStream stream = client.GetStream();
+            Message messageLength = new Message();
             //Add Image
             if (imagePath != "")
             {
@@ -275,6 +276,12 @@ namespace Client
             //Send
             string json = JsonConvert.SerializeObject(newMessage);
             System.Console.WriteLine(json);
+            //Send messageLength first
+            messageLength.header = "MESSAGELENGTH";
+            messageLength.length = Encoding.UTF8.GetByteCount(json);
+            string jsonLength = JsonConvert.SerializeObject(messageLength);
+            stream.Write(Encoding.UTF8.GetBytes(jsonLength), 0, Encoding.UTF8.GetBytes(jsonLength).Length);
+            //send message
             stream.Write(Encoding.UTF8.GetBytes(json), 0, Encoding.UTF8.GetBytes(json).Length);
         }
     }
