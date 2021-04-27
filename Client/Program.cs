@@ -6,6 +6,8 @@ using System.Xml.Serialization;
 using System.IO;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using System.Diagnostics;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace Client
 {
@@ -32,10 +34,11 @@ namespace Client
             while (!Raylib.WindowShouldClose())
             {
                 Raylib.BeginDrawing();
-                Raylib.ClearBackground(Color.DARKGRAY);
+                Raylib.ClearBackground(Raylib_cs.Color.DARKGRAY);
                 ui.ChatBox();
                 serverList[0].PrintMessages();
                 new Notification().NotificationPopup("");
+                
                 Raylib.EndDrawing();
             }
         }

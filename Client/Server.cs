@@ -160,7 +160,6 @@ namespace Client
                             new Notification().NotificationPopup("Invalid credentials, removing server");
                             return;
                         }
-                        System.Console.WriteLine("man");
                     }
                     //if the server closes down for some reason, it will deliver this message to you and return you to the start.
                     catch (Exception)
@@ -192,15 +191,19 @@ namespace Client
                     * print to the user
                 */
                 NetworkStream stream = client.GetStream();
+                byte[] data2 = new byte[256];
                 while (liveChat)
                 //FIX: SERVER SEND MESSAGE WITH LENGTH FIRST AND BYTE SIZE CHANGES ACCORDINGLY
                 {
-                    byte[] data2 = new byte[1028];
                     string responeseData = string.Empty;
                     int bytes = stream.Read(data2, 0, data2.Length);
                     responeseData = System.Text.Encoding.UTF8.GetString(data2, 0, bytes);
                     System.Console.WriteLine(responeseData);
                     Message newMessage = JsonConvert.DeserializeObject<Message>(responeseData);
+                    if (newMessage.header == "MESSAGELENGTH")
+                    {
+                        data2 = new byte[newMessage.length];
+                    }
                     messages.Add(newMessage);
                     System.Console.WriteLine("amount of messages: " + messages.Count);
                 }
@@ -229,25 +232,28 @@ namespace Client
                     using (MemoryStream ms = new MemoryStream(imageData))
                     {
                         System.Drawing.Image image = System.Drawing.Image.FromStream(ms,true);
-                        image.Save("file." + image.RawFormat, image.RawFormat);
+                        image.Save("file.png", ImageFormat.Png);
                         System.Console.WriteLine("HEEEEEEEEEEEEEEEELLLLO");
-                        img = Raylib.LoadImage("file." + image.RawFormat);
+                        img = Raylib.LoadImage("file.png");
+                        File.Delete("file.png");
                     }
+                    System.Console.WriteLine("AHHHHHHHHHHHHHH");
                     Texture2D imageTexture = Raylib.LoadTextureFromImage(img);
                     double ratio = 0;
-                    if (imageTexture.width > imageTexture.height)
+                    if (imageTexture.width > imageTexture.height && imageTexture.width > 500)
                     {
                         ratio = imageTexture.width/500;
                         imageTexture.width = 500;
                         imageTexture.height = (int)(imageTexture.height/ratio);
                     }
-                    else
+                    else if(imageTexture.height > 500)
                     {
                         ratio = imageTexture.height/500;
                         imageTexture.height = 500;
                         imageTexture.width = (int)(imageTexture.width/ratio);
                     }
-                    Raylib.DrawTexture(imageTexture, 200, 150, Raylib_cs.Color.WHITE);
+                    System.Console.WriteLine("wooooooooooooooooooooooo" + imageTexture.height +" " + imageTexture.width );
+                    Raylib.DrawTexture(imageTexture, 100, 100, Raylib_cs.Color.WHITE);
                     
                 }
             }
