@@ -133,13 +133,10 @@ namespace Client
             try
             {
                 client = new TcpClient(ip, port);
-                string password = GetPassword();
-                Byte[] credentialsData = Encoding.UTF8.GetBytes($"{username},{password}");
                 NetworkStream stream = client.GetStream();
+                SendMessage("LOGIN", "Janne,programmering");
                 try
                 {
-                    stream.Write(credentialsData, 0, credentialsData.Length);
-
                     try
                     {
                         /*this while loop uses stream.Read to get data from the server, the stream we are using is the server and by reading it
@@ -149,15 +146,16 @@ namespace Client
                         byte[] data2 = new byte[256];
                         string responeseData = string.Empty;
                         int bytes = stream.Read(data2, 0, data2.Length);
-                        System.Console.WriteLine("hello");
                         responeseData = System.Text.Encoding.UTF8.GetString(data2, 0, bytes);
-                        if (responeseData == "yes")
+                        Message newMessage = JsonConvert.DeserializeObject<Message>(responeseData);
+                        if (newMessage.messageText == "yes")
                         {
+                            stream.Close();
                             Thread liveChat = new Thread(() => LiveChat());
                             liveChat.Start();
                             return;
                         }
-                        else if (responeseData == "no")
+                        else if (newMessage.messageText == "no")
                         {
                             new Notification().NotificationPopup("Invalid credentials, removing server");
                             return;
@@ -188,8 +186,7 @@ namespace Client
 
         private void LiveChat()
         {
-            try
-            {
+            
                 /*this while loop uses stream.Read to get data from the server, the stream we are using is the server and by reading it
                     * we can get the bytes coming from the stream and then we can use the GetString to convert bytes to a string, which we then
                     * print to the user
@@ -203,15 +200,12 @@ namespace Client
                     responeseData = System.Text.Encoding.UTF8.GetString(data2, 0, bytes);
                     System.Console.WriteLine(responeseData);
                     Message newMessage = JsonConvert.DeserializeObject<Message>(responeseData);
-                    
                     messages.Add(newMessage);
+                    System.Console.WriteLine("amount of messages: " + messages.Count);
                 }
-            }
+            
             //if the server closes down for some reason, it will deliver this message to you and return you to the start.
-            catch (Exception)
-            {
-                Console.WriteLine("It looks the the connection with the server broke");
-            }
+            
         }
 
         //prints messages sent by server
@@ -223,15 +217,21 @@ namespace Client
             {
                 if (messages[i].messageText != string.Empty)
                 {
-                    DrawText(messages[i].messageText,x,y,16, Raylib_cs.Color.WHITE);   
+                    DrawText(messages[i].messageText,x,y,16, Raylib_cs.Color.WHITE);
                     y -= 15;
                 }
                 if (messages[i].image != string.Empty)
                 {
                     byte[] imageData = Convert.FromBase64String(messages[i].image);
                     string imageDataRaw = Encoding.UTF8.GetString(imageData);
-                    IntPtr memoryImage = Marshal.StringToCoTaskMemUTF8(imageDataRaw);
-                    Raylib_cs.Image img = Raylib.LoadImagePro(memoryImage, 100,100,0);
+                    Raylib_cs.Image img = new Raylib_cs.Image();
+                    using (MemoryStream ms = new MemoryStream(imageData))
+                    {
+                        System.Drawing.Image image = System.Drawing.Image.FromStream(ms,true);
+                        image.Save("file." + image.RawFormat, image.RawFormat);
+                        System.Console.WriteLine("HEEEEEEEEEEEEEEEELLLLO");
+                        img = Raylib.LoadImage("file." + image.RawFormat);
+                    }
                     Texture2D imageTexture = Raylib.LoadTextureFromImage(img);
                     double ratio = 0;
                     if (imageTexture.width > imageTexture.height)
