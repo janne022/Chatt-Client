@@ -12,6 +12,16 @@ namespace Client
         public string uuid;
         public string messageText = "";
         public string image = "";
+        private Image rayImage;
         public string color;
+
+        public Image GetImage()
+        {
+            return rayImage;
+        }
+        public void SetImage(Image rayImage)
+        {
+            this.rayImage = rayImage;
+        }
     }
 }

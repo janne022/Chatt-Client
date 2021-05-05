@@ -17,10 +17,11 @@ namespace Client
         Rectangle openImage = new Rectangle(670,730,80,80);
         Rectangle imageBorder = new Rectangle(220,100,400,450);
         Image imgIcon = Raylib.LoadImage("uploadPicture.png");
+        Texture2D iconTexture;
         Image img;
         int key;
         float dt;
-        Font font = Raylib.LoadFont(@"");
+        Font font = Raylib.GetFontDefault();
         int[] written = new int[maxInput];
 
         [DllImport(Raylib.nativeLibName, CallingConvention = CallingConvention.Cdecl)]
@@ -28,6 +29,11 @@ namespace Client
         [DllImport(Raylib.nativeLibName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DrawTextRec(Font font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint);
         public Server activeServer;
+
+        public InteractUi()
+        {
+            iconTexture = Raylib.LoadTextureFromImage(imgIcon);
+        }
 
         public void SetActiveServer(Server activeServer)
         {
@@ -76,13 +82,11 @@ namespace Client
                     fileExplorer.Filters.Add(new CommonFileDialogFilter("", "*.PNG;*.JPG"));
                     if (fileExplorer.ShowDialog() == CommonFileDialogResult.Ok)
                     {
-                        img = Raylib.LoadImage(fileExplorer.FileName);
                         activeServer.SendMessage("MESSAGE",imagePath: fileExplorer.FileName);
                     }
                 }
             }
             Raylib.DrawRectangle((int)inputBox.x,(int)inputBox.y,(int)inputBox.height,(int)inputBox.width,Color.BLUE);
-            Texture2D iconTexture = Raylib.LoadTextureFromImage(imgIcon);
             iconTexture.height = 80;
             iconTexture.width = 80;
             Raylib.DrawTexture(iconTexture, 670, 730, Color.WHITE);

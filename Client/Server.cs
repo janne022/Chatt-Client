@@ -21,6 +21,9 @@ namespace Client
         public InteractUi ui;
         public string ip;
         public int port;
+        private Raylib_cs.Image img = new Raylib_cs.Image();
+        private Raylib_cs.Image previousImg = new Raylib_cs.Image();
+        private Texture2D imageTexture = new Texture2D();
         public string username;
         public byte[] password;
 
@@ -191,9 +194,8 @@ namespace Client
                     * print to the user
                 */
                 NetworkStream stream = client.GetStream();
-                byte[] data2 = new byte[256];
+                byte[] data2 = new byte[512];
                 while (liveChat)
-                //FIX: SERVER SEND MESSAGE WITH LENGTH FIRST AND BYTE SIZE CHANGES ACCORDINGLY
                 {
                     string responeseData = string.Empty;
                     int bytes = stream.Read(data2, 0, data2.Length);
@@ -202,10 +204,21 @@ namespace Client
                     Message newMessage = JsonConvert.DeserializeObject<Message>(responeseData);
                     if (newMessage.header == "MESSAGELENGTH")
                     {
-                        data2 = new byte[newMessage.length];
+                        data2 = new byte[newMessage.length + 256];
+                    }
+                    if (newMessage.image != string.Empty)
+                    {
+                        byte[] imageData = Convert.FromBase64String(newMessage.image);
+                        string imageDataRaw = Encoding.UTF8.GetString(imageData);
+                        using (MemoryStream imageStream = new MemoryStream(imageData))
+                        {
+                            System.Drawing.Image image = System.Drawing.Image.FromStream(imageStream,true, true);
+                            image.Save("file.png", ImageFormat.Png);
+                            img = Raylib.LoadImage("file.png");
+                            File.Delete("file.png");
+                        }
                     }
                     messages.Add(newMessage);
-                    System.Console.WriteLine("amount of messages: " + messages.Count);
                 }
             
             //if the server closes down for some reason, it will deliver this message to you and return you to the start.
@@ -213,6 +226,7 @@ namespace Client
         }
 
         //prints messages sent by server
+        //FIX: PRINT MULTIPLE IMAGES, AND IN VERTICAL ARRAY
         public void PrintMessages()
         {
             int x = 100;
@@ -226,19 +240,12 @@ namespace Client
                 }
                 if (messages[i].image != string.Empty)
                 {
-                    byte[] imageData = Convert.FromBase64String(messages[i].image);
-                    string imageDataRaw = Encoding.UTF8.GetString(imageData);
-                    Raylib_cs.Image img = new Raylib_cs.Image();
-                    using (MemoryStream ms = new MemoryStream(imageData))
+                    if (img.data != previousImg.data)
                     {
-                        System.Drawing.Image image = System.Drawing.Image.FromStream(ms,true);
-                        image.Save("file.png", ImageFormat.Png);
-                        System.Console.WriteLine("HEEEEEEEEEEEEEEEELLLLO");
-                        img = Raylib.LoadImage("file.png");
-                        File.Delete("file.png");
+                        System.Console.WriteLine("loaded image");
+                        imageTexture = Raylib.LoadTextureFromImage(img);
+                        previousImg = img;
                     }
-                    System.Console.WriteLine("AHHHHHHHHHHHHHH");
-                    Texture2D imageTexture = Raylib.LoadTextureFromImage(img);
                     double ratio = 0;
                     if (imageTexture.width > imageTexture.height && imageTexture.width > 500)
                     {
@@ -252,9 +259,7 @@ namespace Client
                         imageTexture.height = 500;
                         imageTexture.width = (int)(imageTexture.width/ratio);
                     }
-                    System.Console.WriteLine("wooooooooooooooooooooooo" + imageTexture.height +" " + imageTexture.width );
                     Raylib.DrawTexture(imageTexture, 100, 100, Raylib_cs.Color.WHITE);
-                    
                 }
             }
         }
