@@ -48,7 +48,7 @@ namespace Client
         {
             while (true)
             {
-                Thread.Sleep(4000);
+                Thread.Sleep(8000);
                 SaveInstances(serverList, serializer);
             }
         }
@@ -56,9 +56,16 @@ namespace Client
         private static void SaveInstances(List<Server> serverList, XmlSerializer serializer)
         {
           //filestream closes safely with using statement. Open or creates file and serializes the list inputed in parameter.
-          using (FileStream serverFile = File.Open("Servers.xml", FileMode.OpenOrCreate))
+          try
           {
-              serializer.Serialize(serverFile, serverList);
+              using (FileStream serverFile = File.Open("Servers.xml", FileMode.OpenOrCreate))
+                {
+                    serializer.Serialize(serverFile, serverList);
+                }
+          }
+          catch (System.Exception)
+          {
+              System.Console.WriteLine("Error Saving!");
           }
         }
 

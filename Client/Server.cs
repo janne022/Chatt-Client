@@ -226,40 +226,49 @@ namespace Client
         }
 
         //prints messages sent by server
-        //FIX: PRINT MULTIPLE IMAGES, AND IN VERTICAL ARRAY
+        //FIX: PRINT MULTIPLE IMAGES, AND IN VERTICAL ARRAY (PRINTS IMAGES, BUT IS NOT STABLE)
+        //TODO: PRINT USERNAME WITH MESSAGE
         public void PrintMessages()
         {
             int x = 100;
             int y = 450;
+            int xImage = 150;
+            int yImage = 500;
             for (int i = messages.Count - 1; i >= 0; i--)
             {
                 if (messages[i].messageText != string.Empty)
                 {
                     DrawText(messages[i].messageText,x,y,16, Raylib_cs.Color.WHITE);
                     y -= 15;
+                    yImage -= 15;
                 }
                 if (messages[i].image != string.Empty)
                 {
+                    //FIX: FIRST IMAGE DOES NOT LOAD
                     if (img.data != previousImg.data)
                     {
                         System.Console.WriteLine("loaded image");
                         imageTexture = Raylib.LoadTextureFromImage(img);
+                        messages[i].SetImage(imageTexture);
                         previousImg = img;
                     }
+                    Texture2D currentImage = messages[i].GetImage();
                     double ratio = 0;
-                    if (imageTexture.width > imageTexture.height && imageTexture.width > 500)
+                    if (currentImage.width > currentImage.height && currentImage.width > 500)
                     {
-                        ratio = imageTexture.width/500;
-                        imageTexture.width = 500;
-                        imageTexture.height = (int)(imageTexture.height/ratio);
+                        ratio = currentImage.width/500;
+                        currentImage.width = 500;
+                        currentImage.height = (int)(currentImage.height/ratio);
                     }
-                    else if(imageTexture.height > 500)
+                    else if(currentImage.height > 500)
                     {
-                        ratio = imageTexture.height/500;
-                        imageTexture.height = 500;
-                        imageTexture.width = (int)(imageTexture.width/ratio);
+                        ratio = currentImage.height/500;
+                        currentImage.height = 500;
+                        currentImage.width = (int)(currentImage.width/ratio);
                     }
-                    Raylib.DrawTexture(imageTexture, 100, 100, Raylib_cs.Color.WHITE);
+                    yImage -= currentImage.height + 15;
+                    y -= currentImage.height;
+                    Raylib.DrawTexture(currentImage, xImage, yImage, Raylib_cs.Color.WHITE);
                 }
             }
         }

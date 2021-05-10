@@ -10,16 +10,17 @@ namespace Client
         public string header;
         public int length;
         public string uuid;
+        public string name;
         public string messageText = "";
         public string image = "";
-        private Image rayImage;
+        private Texture2D rayImage;
         public string color;
 
-        public Image GetImage()
+        public Texture2D GetImage()
         {
             return rayImage;
         }
-        public void SetImage(Image rayImage)
+        public void SetImage(Texture2D rayImage)
         {
             this.rayImage = rayImage;
         }
