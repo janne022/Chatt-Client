@@ -218,9 +218,7 @@ namespace Client
             }
         }
 
-        //prints messages sent by server
-        //FIX: PRINT MULTIPLE IMAGES, AND IN VERTICAL ARRAY (PRINTS IMAGES, BUT IS NOT STABLE)
-        //TODO: PRINT USERNAME WITH MESSAGE
+        //Prints messages and images sent by server
         public void PrintMessages()
         {
             int x = 100;
@@ -229,15 +227,15 @@ namespace Client
             int yImage = 500;
             for (int i = messages.Count - 1; i >= 0; i--)
             {
+                //FIX: FAILS AT FIRST MESSAGE
                 if (messages[i].messageText != string.Empty)
                 {
-                    DrawText(messages[i].name+ ": " + messages[i].messageText,x,y,16, Raylib_cs.Color.WHITE);
+                    DrawText(messages[i].name+ ": " + messages[i].messageText,x,y + 25,16, Raylib_cs.Color.WHITE);
                     y -= 15;
                     yImage -= 15;
                 }
                 if (messages[i].image != string.Empty)
                 {
-                    //FIX: FIRST IMAGE DOES NOT LOAD, instead do bool to toggle if new picture, then turn of bool
                     if (img.data != previousImg.data)
                     {
                         System.Console.WriteLine("loaded image");
