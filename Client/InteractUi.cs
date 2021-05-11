@@ -12,17 +12,17 @@ namespace Client
     {
         private const int  maxInput = 250;
         private char[] name = new char[maxInput];
-        int letterCount = 0;
-        Rectangle inputBox = new Rectangle(100,500,650,650);
-        Rectangle openImage = new Rectangle(670,730,80,80);
-        Rectangle imageBorder = new Rectangle(220,100,400,450);
-        Image imgIcon = Raylib.LoadImage("uploadPicture.png");
-        Texture2D iconTexture;
-        Image img;
-        int key;
-        float dt;
-        Font font = Raylib.GetFontDefault();
-        int[] written = new int[maxInput];
+        private int letterCount = 0;
+        private Rectangle inputBox = new Rectangle(100,500,650,650);
+        private Rectangle openImage = new Rectangle(670,730,80,80);
+        private Rectangle imageBorder = new Rectangle(220,100,400,450);
+        private Image imgIcon = Raylib.LoadImage("uploadPicture.png");
+        private Texture2D iconTexture;
+        private Image img;
+        private int key;
+        private float dt;
+        private Font font = Raylib.GetFontDefault();
+        private int[] written = new int[maxInput];
 
         [DllImport(Raylib.nativeLibName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DrawText([MarshalAs(UnmanagedType.LPUTF8Str)] string text, int posX, int posY, int fontSize, Color color);
@@ -80,17 +80,14 @@ namespace Client
                 }
             }
             //Upload Picture function
-            if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(),openImage))
+            if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(),openImage) && Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
             {
-                if (Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
+                CommonOpenFileDialog fileExplorer = new CommonOpenFileDialog();
+                fileExplorer.InitialDirectory = @"C:\Users\" +Environment.UserName + @"\Pictures";
+                fileExplorer.Filters.Add(new CommonFileDialogFilter("", "*.PNG;*.JPG"));
+                if (fileExplorer.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    CommonOpenFileDialog fileExplorer = new CommonOpenFileDialog();
-                    fileExplorer.InitialDirectory = @"C:\Users\" +Environment.UserName + @"\Pictures";
-                    fileExplorer.Filters.Add(new CommonFileDialogFilter("", "*.PNG;*.JPG"));
-                    if (fileExplorer.ShowDialog() == CommonFileDialogResult.Ok)
-                    {
-                        activeServer.SendMessage("MESSAGE",imagePath: fileExplorer.FileName);
-                    }
+                    activeServer.SendMessage("MESSAGE",imagePath: fileExplorer.FileName);
                 }
             }
             Raylib.DrawRectangle((int)inputBox.x,(int)inputBox.y,(int)inputBox.height,(int)inputBox.width,Color.BLUE);
@@ -98,6 +95,18 @@ namespace Client
             iconTexture.width = 80;
             Raylib.DrawTexture(iconTexture, 670, 730, Color.WHITE);
             DrawTextRec(font, new string(name),inputBox,16,1,true,Color.WHITE);
+        }
+        public string Login()
+        {
+            string username = "";
+            string password = "";
+            while (true)
+            {
+                if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(),openImage) && Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON) && username != string.Empty && password != string.Empty)
+                {
+                    return $"{username},{password}";
+                }
+            }
         }
     }
 }

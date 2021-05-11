@@ -132,44 +132,40 @@ namespace Client
             return plaintext;
         }
 
-         public void Join()
+         public bool Join()
         {
             try
             {
                 client = new TcpClient(ip, port);
                 stream = client.GetStream();
                 SendMessage("LOGIN", "Janne,programmering");
-                try
+                /*this while loop uses stream.Read to get data from the server, the stream we are using is the server and by reading it
+                    * we can get the bytes coming from the stream and then we can use the GetString to convert bytes to a string, which we then
+                    * print to the user
+                */
+                byte[] data2 = new byte[256];
+                string responeseData = string.Empty;
+                int bytes = stream.Read(data2, 0, data2.Length);
+                responeseData = System.Text.Encoding.UTF8.GetString(data2, 0, bytes);
+                Message newMessage = JsonConvert.DeserializeObject<Message>(responeseData);
+                if (newMessage.messageText == "yes")
                 {
-                    try
-                    {
-                        /*this while loop uses stream.Read to get data from the server, the stream we are using is the server and by reading it
-                            * we can get the bytes coming from the stream and then we can use the GetString to convert bytes to a string, which we then
-                            * print to the user
-                        */
-                        byte[] data2 = new byte[256];
-                        string responeseData = string.Empty;
-                        int bytes = stream.Read(data2, 0, data2.Length);
-                        responeseData = System.Text.Encoding.UTF8.GetString(data2, 0, bytes);
-                        Message newMessage = JsonConvert.DeserializeObject<Message>(responeseData);
-                        Thread liveChat = new Thread(() => LiveChat());
-                        liveChat.Start();
-                    }
-                    //if the server closes down for some reason, it will deliver this message to you and return you to the start.
-                    catch (Exception)
-                    {
-                        Console.WriteLine("It looks the the connection with the server broke");
-                    }
+                    Thread liveChat = new Thread(() => LiveChat());
+                    liveChat.Start();
+                    return true;
                 }
-                catch (Exception)
+                else if (newMessage.messageText == "no")
                 {
-                    Console.WriteLine("It looks the the connection with the server broke");
+                    Thread liveChat = new Thread(() => LiveChat());
+                    liveChat.Start();
+                    return false;
                 }
             }
             catch (Exception)
             {
                 Console.WriteLine("Could not connect, doublecheck the ip/port and try again");
             }
+            return false;
         }
 
         public void Leave()
