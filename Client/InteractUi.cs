@@ -10,8 +10,8 @@ namespace Client
 {
     public class InteractUi
     {
-        const int  maxInput = 250;
-        char[] name = new char[maxInput];
+        private const int  maxInput = 250;
+        private char[] name = new char[maxInput];
         int letterCount = 0;
         Rectangle inputBox = new Rectangle(100,500,650,650);
         Rectangle openImage = new Rectangle(670,730,80,80);
@@ -64,7 +64,14 @@ namespace Client
                 if (Raylib.IsKeyReleased(KeyboardKey.KEY_ENTER))
                 {
                     //FIX: 
-                    activeServer.SendMessage("MESSAGE",new string(name).Replace("\0",string.Empty));
+                    if (name[0] == '!')
+                    {
+                        activeServer.SendMessage("COMMAND",new string(name).Replace("\0",string.Empty));
+                    }
+                    else
+                    {
+                        activeServer.SendMessage("MESSAGE",new string(name).Replace("\0",string.Empty));
+                    }
                     for (int i = 0; i < name.Length; i++)
                     {
                         name[i] = '\0';

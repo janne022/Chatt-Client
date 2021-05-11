@@ -152,17 +152,8 @@ namespace Client
                         int bytes = stream.Read(data2, 0, data2.Length);
                         responeseData = System.Text.Encoding.UTF8.GetString(data2, 0, bytes);
                         Message newMessage = JsonConvert.DeserializeObject<Message>(responeseData);
-                        if (newMessage.messageText == "yes")
-                        {
-                            Thread liveChat = new Thread(() => LiveChat());
-                            liveChat.Start();
-                            return;
-                        }
-                        else if (newMessage.messageText == "no")
-                        {
-                            new Notification().NotificationPopup("Invalid credentials, removing server");
-                            return;
-                        }
+                        Thread liveChat = new Thread(() => LiveChat());
+                        liveChat.Start();
                     }
                     //if the server closes down for some reason, it will deliver this message to you and return you to the start.
                     catch (Exception)
@@ -188,7 +179,8 @@ namespace Client
 
         private void LiveChat()
         {
-            
+            try
+            {
                 /*this while loop uses stream.Read to get data from the server, the stream we are using is the server and by reading it
                     * we can get the bytes coming from the stream and then we can use the GetString to convert bytes to a string, which we then
                     * print to the user
@@ -220,9 +212,14 @@ namespace Client
                     }
                     messages.Add(newMessage);
                 }
-            
-            //if the server closes down for some reason, it will deliver this message to you and return you to the start.
-            
+                //if the server closes down for some reason, it will deliver this message to you and return you to the start.
+            }
+            catch (Exception)
+            {
+                stream.Close();
+                System.Console.WriteLine("Connection with the server broke!");
+                return;
+            }
         }
 
         //prints messages sent by server
@@ -238,13 +235,13 @@ namespace Client
             {
                 if (messages[i].messageText != string.Empty)
                 {
-                    DrawText(messages[i].messageText,x,y,16, Raylib_cs.Color.WHITE);
+                    DrawText(messages[i].name+ ": " + messages[i].messageText,x,y,16, Raylib_cs.Color.WHITE);
                     y -= 15;
                     yImage -= 15;
                 }
                 if (messages[i].image != string.Empty)
                 {
-                    //FIX: FIRST IMAGE DOES NOT LOAD
+                    //FIX: FIRST IMAGE DOES NOT LOAD, instead do bool to toggle if new picture, then turn of bool
                     if (img.data != previousImg.data)
                     {
                         System.Console.WriteLine("loaded image");
@@ -267,7 +264,8 @@ namespace Client
                         currentImage.width = (int)(currentImage.width/ratio);
                     }
                     yImage -= currentImage.height + 15;
-                    y -= currentImage.height;
+                    y -= currentImage.height + 15;
+                    DrawText(messages[i].name+ ": ",x,yImage,16, Raylib_cs.Color.WHITE);
                     Raylib.DrawTexture(currentImage, xImage, yImage, Raylib_cs.Color.WHITE);
                 }
             }
