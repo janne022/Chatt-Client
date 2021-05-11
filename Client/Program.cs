@@ -22,12 +22,11 @@ namespace Client
                 serverList = LoadInstances(serverList, serializer);
             }
             Raylib.InitWindow(1200,800,"Janne's Chatt");
+            InteractUi ui = new InteractUi();
             serverList.Add(new Server());
             serverList[0].ip = "localhost";
             serverList[0].port = 9999;
-
             serverList[0].Join();
-            InteractUi ui = new InteractUi();
             ui.SetActiveServer(serverList[0]);
             Thread timeTick = new Thread(()=>BackgroundTick(serverList, serializer));
             timeTick.Start();
