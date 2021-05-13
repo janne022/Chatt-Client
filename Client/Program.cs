@@ -37,7 +37,6 @@ namespace Client
                 ui.ChatBox();
                 serverList[0].PrintMessages();
                 new Notification().NotificationPopup("");
-                
                 Raylib.EndDrawing();
             }
         }
