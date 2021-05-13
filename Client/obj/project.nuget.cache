@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "E24gChX4GHio57GJnHsGolMW9k9Useu3JVLzYHBLBEZdMVCwGgCn+MRfitiTN10opM/T+PLsaOEffvigsIukZw==",
+  "dgSpecHash": "qU4IvtI50L1e41dYkQJjDEuf8uCCEElWwDu/fB2K9nILgv2U2axaDF6ZDcds/oX1sPD1IO79L5ONZ6CWnVrVtw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj",
+  "projectFilePath": "c:\\Users\\janni\\OneDrive\\Dokument\\Visual Studio Code\\Chatt Client\\Client\\Client.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\janni\\.nuget\\packages\\microsoft-windowsapicodepack-core\\1.1.4\\microsoft-windowsapicodepack-core.1.1.4.nupkg.sha512",
     "C:\\Users\\janni\\.nuget\\packages\\microsoft-windowsapicodepack-shell\\1.1.4\\microsoft-windowsapicodepack-shell.1.1.4.nupkg.sha512",
