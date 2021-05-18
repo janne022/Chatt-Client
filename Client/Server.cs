@@ -30,9 +30,26 @@ namespace Client
         //These may need to change to update password, I read that these shouldn't be the same? But it keeps complaining without them being the same.
         private readonly byte[] decryptedKey = Encoding.UTF8.GetBytes("r4u7x!A%D*G-KaPd");
         private readonly byte[] decryptedIV = Encoding.UTF8.GetBytes("r4u7x!A%D*G-KaPd");
-        string serverImage;
+        private string serverImagePath;
+        Raylib_cs.Texture2D serverImageTexture;
+        public Texture2D ServerImageTexture
+        {
+            get {return serverImageTexture;}
+            set {serverImageTexture = value;}
+        }
+        public string ServerImagePath
+        {
+            get {return serverImagePath;}
+            set {
+                    serverImagePath = value;
+                    Raylib_cs.Image serverImage = Raylib.LoadImage(value);
+                    serverImageTexture = Raylib.LoadTextureFromImage(serverImage);
+                    //POSSIBLE TODO: scale height + width according to algorithm, instead of constant
+                    serverImageTexture.height = 50;
+                    serverImageTexture.width = 50;
+                }
+        }
         string nameColor;
-
         TcpClient client;
         List<Message> messages = new List<Message>();
 

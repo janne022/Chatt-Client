@@ -16,7 +16,7 @@ namespace Client
         private Rectangle inputBox = new Rectangle(100,500,650,650);
         private Rectangle openImage = new Rectangle(670,730,80,80);
         private Rectangle imageBorder = new Rectangle(220,100,400,450);
-        private Image imgIcon = Raylib.LoadImage("uploadPicture.png");
+        private Image imgIcon = Raylib.LoadImage("/uploadPicture.png");
         private Texture2D iconTexture;
         private Image img;
         private int key;
@@ -96,16 +96,13 @@ namespace Client
             Raylib.DrawTexture(iconTexture, 670, 730, Color.WHITE);
             DrawTextRec(font, new string(name),inputBox,16,1,true,Color.WHITE);
         }
-        public string Login()
+        public void ServerListUI(List<Server> serverList)
         {
-            string username = "";
-            string password = "";
-            while (true)
+            int y = 10;
+            foreach (Server server in serverList)
             {
-                if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(),openImage) && Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON) && username != string.Empty && password != string.Empty)
-                {
-                    return $"{username},{password}";
-                }
+                Raylib.DrawTexture(server.ServerImageTexture, 10, y, Color.WHITE);
+                y += 10;
             }
         }
     }

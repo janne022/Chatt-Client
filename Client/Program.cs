@@ -15,25 +15,29 @@ namespace Client
     {
         static void Main(string[] args)
         {
+            Raylib.InitWindow(1200,800,"Janne's Chatt");
             List<Server> serverList = new List<Server>();
             XmlSerializer serializer = new XmlSerializer(typeof(List<Server>));
             if (File.Exists("Servers.xml"))
             {
                 serverList = LoadInstances(serverList, serializer);
             }
-            Raylib.InitWindow(1200,800,"Janne's Chatt");
             InteractUi ui = new InteractUi();
             serverList.Add(new Server());
             serverList[0].ip = "localhost";
             serverList[0].port = 9999;
             serverList[0].Join();
             ui.SetActiveServer(serverList[0]);
+            serverList[0].ServerImagePath = "serverIcon.png";
+            serverList[0].ServerImagePath = "serverIcon.png";
+            
             Thread timeTick = new Thread(()=>BackgroundTick(serverList, serializer));
             timeTick.Start();
             while (!Raylib.WindowShouldClose())
             {
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(Raylib_cs.Color.DARKGRAY);
+                ui.ServerListUI(serverList);
                 ui.ChatBox();
                 serverList[0].PrintMessages();
                 new Notification().NotificationPopup("");
