@@ -21,6 +21,7 @@ namespace Client
         public InteractUi ui;
         public string ip;
         public int port;
+        public string serverName;
         private Raylib_cs.Image img = new Raylib_cs.Image();
         private Raylib_cs.Image previousImg = new Raylib_cs.Image();
         private Texture2D imageTexture = new Texture2D();
@@ -200,7 +201,7 @@ namespace Client
                 */
                 NetworkStream stream = client.GetStream();
                 byte[] data2 = new byte[512];
-                while (liveChat)
+                while (liveChat || !Raylib.WindowShouldClose())
                 {
                     string responeseData = string.Empty;
                     int bytes = stream.Read(data2, 0, data2.Length);

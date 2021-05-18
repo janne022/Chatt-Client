@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Raylib_cs;
 using System.Numerics;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Client
         private Rectangle inputBox = new Rectangle(100,500,650,650);
         private Rectangle openImage = new Rectangle(670,730,80,80);
         private Rectangle imageBorder = new Rectangle(220,100,400,450);
-        private Image imgIcon = Raylib.LoadImage("/uploadPicture.png");
+        private Image imgIcon = Raylib.LoadImage(Path.GetFullPath("uploadPicture.png"));
         private Texture2D iconTexture;
         private Image img;
         private int key;
@@ -28,16 +29,16 @@ namespace Client
         public static extern void DrawText([MarshalAs(UnmanagedType.LPUTF8Str)] string text, int posX, int posY, int fontSize, Color color);
         [DllImport(Raylib.nativeLibName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void DrawTextRec(Font font, [MarshalAs(UnmanagedType.LPUTF8Str)] string text, Rectangle rec, float fontSize, float spacing, bool wordWrap, Color tint);
-        public Server activeServer;
+        private Server activeServer;
 
         public InteractUi()
         {
             iconTexture = Raylib.LoadTextureFromImage(imgIcon);
         }
-
-        public void SetActiveServer(Server activeServer)
+        public Server ActiveServer
         {
-            this.activeServer = activeServer;
+            get{return activeServer;}
+            set{activeServer = value;}
         }
         public void ChatBox()
         {
@@ -101,8 +102,17 @@ namespace Client
             int y = 10;
             foreach (Server server in serverList)
             {
+                Raylib.DrawRectangle(10, y, 50, 50, Color.GRAY);
                 Raylib.DrawTexture(server.ServerImageTexture, 10, y, Color.WHITE);
-                y += 10;
+                if (ActiveServer != null)
+                {
+                    DrawText("Current Server: " + ActiveServer.serverName,950, 10, 16, Color.WHITE);   
+                }
+                if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), new Rectangle(10, y, 50, 50)) && Raylib.IsMouseButtonPressed(MouseButton.MOUSE_LEFT_BUTTON))
+                {
+                    activeServer = server;
+                }
+                y += 60;
             }
         }
     }
