@@ -41,10 +41,10 @@ namespace Client
                 Raylib.BeginDrawing();
                 Raylib.ClearBackground(Raylib_cs.Color.DARKGRAY);
                 ui.ServerListUI(serverList);
-                ui.ChatBox();
                 if (ui.ActiveServer != null)
                 {
                     ui.ActiveServer.PrintMessages();
+                    ui.ChatBox();
                 }
                 new Notification().NotificationPopup("");
                 Raylib.EndDrawing();
